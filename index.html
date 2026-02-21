@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>💎 Real Housewives of Beverly Hills: The Game</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Josefin+Sans:wght@300;400;600&display=swap');
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-dark: #8B6914;
+  --black: #0A0A0A;
+  --cream: #FAF6EF;
+  --rose: #C4776A;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html, body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #0A0A0A;
+  color: #FAF6EF;
+  min-height: 100vh;
+}
+
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; }
+
+/* TITLE */
+#screen-title {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.12) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 30%, rgba(196,119,106,0.12) 0%, transparent 50%),
+              linear-gradient(160deg, #0A0A0A 0%, #1A0F0A 50%, #0A0A0A 100%);
+  position: relative; overflow: hidden;
+}
+.floating-gems { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.gem { position: absolute; font-size: 1.8rem; opacity: 0.25; animation: gemFloat 7s ease-in-out infinite; }
+.gem:nth-child(1){left:8%;top:15%;animation-delay:0s;}
+.gem:nth-child(2){left:82%;top:8%;animation-delay:1s;}
+.gem:nth-child(3){left:50%;top:75%;animation-delay:2s;}
+.gem:nth-child(4){left:20%;top:78%;animation-delay:0.5s;}
+.gem:nth-child(5){left:72%;top:60%;animation-delay:1.5s;}
+.gem:nth-child(6){left:90%;top:38%;animation-delay:3s;}
+@keyframes gemFloat{0%,100%{transform:translateY(0) rotate(0deg);opacity:.25;}50%{transform:translateY(-18px) rotate(12deg);opacity:.5;}}
+
+.title-wrap { position: relative; z-index: 2; animation: fadeUp .9s ease both; }
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px);}to{opacity:1;transform:translateY(0);}}
+
+.eyebrow { font-family: 'Josefin Sans', sans-serif; font-size: 0.65rem; letter-spacing: .45em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+.t-real { display: block; font-size: clamp(3rem,8vw,5.5rem); font-style: italic; color: var(--gold-light); line-height: 1; animation: fadeUp .9s ease .15s both; }
+.t-housewives { display: block; font-size: clamp(2rem,6vw,4rem); font-weight: 900; color: #FAF6EF; letter-spacing: -.02em; line-height: 1; animation: fadeUp .9s ease .3s both; }
+.t-of { display: block; font-size: clamp(.9rem,2vw,1.3rem); letter-spacing: .35em; text-transform: uppercase; color: var(--gold); line-height: 1.8; font-family: 'Josefin Sans', sans-serif; font-weight: 300; animation: fadeUp .9s ease .4s both; }
+.t-bh { display: block; font-size: clamp(1.5rem,4.5vw,3.2rem); font-style: italic; color: var(--rose); line-height: 1.1; animation: fadeUp .9s ease .5s both; }
+.divider { width: 80px; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 1.5rem auto; }
+.tagline { font-style: italic; color: rgba(250,246,239,.55); font-size: 1rem; margin-bottom: 2.5rem; }
+
+.btn-gold { background: linear-gradient(135deg,#C9A84C,#8B6914); color: #0A0A0A; border: none; padding: .9rem 2.5rem; font-family: 'Josefin Sans', sans-serif; font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; cursor: pointer; transition: all .25s; display: block; margin: 0 auto .9rem; font-weight: 600; }
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(201,168,76,.4);}
+.btn-outline { background: transparent; color: var(--gold); border: 1px solid rgba(201,168,76,.4); padding: .7rem 2rem; font-family: 'Josefin Sans', sans-serif; font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; transition: all .25s; display: block; margin: 0 auto; }
+.btn-outline:hover{background:rgba(201,168,76,.08);border-color:var(--gold);}
+
+/* HOW TO */
+#screen-howto { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,.88); align-items: center; justify-content: center; }
+.modal { background: linear-gradient(145deg,#1a1008,#0f0b05); border: 1px solid rgba(201,168,76,.35); padding: 2.5rem; max-width: 520px; width: 92%; animation: fadeUp .35s ease; max-height: 90vh; overflow-y: auto; }
+.modal h2 { font-size: 1.8rem; font-style: italic; color: var(--gold-light); margin-bottom: 1.5rem; text-align: center; }
+.modal-section{margin-bottom:1.3rem;}
+.modal-section h3 { font-family:'Josefin Sans',sans-serif; font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:.5rem; }
+.modal-section p,.modal-section li{color:rgba(250,246,239,.8);font-size:.95rem;line-height:1.7;}
+.modal-section ul{list-style:none;}
+
+/* CHARACTER SELECT */
+#screen-character { flex-direction: column; align-items: center; padding: 2.5rem 1rem 3rem; overflow-y: auto; background: linear-gradient(160deg,#0A0A0A 0%,#1A0A14 100%); }
+#screen-character h2 { font-size: 2.2rem; font-style: italic; color: var(--gold-light); margin-bottom: .4rem; text-align: center; }
+.char-sub { font-family: 'Josefin Sans', sans-serif; font-size: .65rem; letter-spacing: .3em; color: var(--gold); text-align: center; margin-bottom: 2rem; text-transform: uppercase; }
+.char-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 1.25rem; width: 100%; max-width: 1100px; }
+.char-card { background: linear-gradient(145deg,rgba(26,16,8,.9),rgba(10,10,10,.9)); border: 1px solid rgba(201,168,76,.25); padding: 1.75rem 1.25rem; cursor: pointer; transition: all .25s; text-align: center; }
+.char-card:hover{border-color:var(--gold);transform:translateY(-5px);box-shadow:0 12px 35px rgba(201,168,76,.18);}
+.char-emoji{font-size:3rem;display:block;margin-bottom:.6rem;}
+.char-name{font-size:1.15rem;font-style:italic;color:var(--gold-light);margin-bottom:.2rem;}
+.char-title{font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:.65rem;}
+.char-bio{font-style:italic;font-size:.85rem;color:rgba(250,246,239,.55);margin-bottom:1rem;line-height:1.45;}
+.mini-stats{display:flex;flex-direction:column;gap:.3rem;}
+.mini-row{display:flex;align-items:center;gap:.5rem;}
+.mini-label{width:42px;font-family:'Josefin Sans',sans-serif;font-size:.55rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(250,246,239,.4);}
+.mini-track{flex:1;height:3px;background:rgba(255,255,255,.1);}
+.mini-fill{height:100%;background:var(--gold);}
+
+/* GAME SCREEN */
+#screen-game { flex-direction: column; background: linear-gradient(160deg,#0A0A0A 0%,#120A10 100%); }
+.game-header { background: rgba(10,10,10,.97); border-bottom: 1px solid rgba(201,168,76,.18); padding: .9rem 1.5rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 50; }
+.hdr-player{display:flex;align-items:center;gap:.6rem;}
+.hdr-avatar{font-size:1.8rem;}
+.hdr-name{font-style:italic;font-size:.95rem;color:var(--gold-light);}
+.hdr-ep{font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(201,168,76,.6);display:flex;align-items:center;gap:.4rem;}
+.hdr-epnum{font-size:1.4rem;font-family:Georgia,serif;color:var(--gold-light);}
+.stats-bar{display:flex;gap:1.2rem;margin-left:auto;flex-wrap:wrap;}
+.stat-item{display:flex;align-items:center;gap:.45rem;font-family:'Josefin Sans',sans-serif;font-size:.6rem;color:rgba(250,246,239,.5);}
+.stat-track{width:55px;height:4px;background:rgba(255,255,255,.1);}
+.stat-fill{height:100%;transition:width .6s ease;}
+.s-fame{background:linear-gradient(90deg,#FFD700,#FFA500);}
+.s-drama{background:linear-gradient(90deg,#FF4444,#FF8C00);}
+.s-wealth{background:linear-gradient(90deg,#4CAF50,#00BCD4);}
+.s-clout{background:linear-gradient(90deg,#9C27B0,#E91E63);}
+.stat-val{color:var(--gold-light);font-size:.68rem;min-width:22px;}
+
+.game-body { display: grid; grid-template-columns: 1fr 270px; gap: 1.5rem; padding: 1.75rem; flex: 1; }
+@media(max-width:780px){.game-body{grid-template-columns:1fr;}.rel-panel{order:-1;}}
+
+.scene-card { background: linear-gradient(145deg,rgba(26,16,8,.8),rgba(10,10,10,.8)); border: 1px solid rgba(201,168,76,.18); padding: 2rem; animation: fadeUp .4s ease; }
+.scene-loc { font-family:'Josefin Sans',sans-serif; font-size:.6rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; }
+.scene-cast{display:flex;gap:.65rem;margin-bottom:1.3rem;flex-wrap:wrap;}
+.cast-pill{display:flex;align-items:center;gap:.35rem;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);padding:.35rem .7rem;}
+.cast-em{font-size:1.1rem;}
+.cast-nm{font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;}
+.scene-text{font-size:1.08rem;line-height:1.82;color:rgba(250,246,239,.88);margin-bottom:1.4rem;min-height:70px;}
+.confessional{background:rgba(139,58,58,.1);border-left:3px solid var(--rose);padding:.9rem 1.25rem;margin-bottom:1.4rem;}
+.conf-label{font-family:'Josefin Sans',sans-serif;font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;color:var(--rose);margin-bottom:.4rem;}
+.conf-text{font-style:italic;color:rgba(250,246,239,.7);font-size:.95rem;line-height:1.6;}
+
+.choices{display:flex;flex-direction:column;gap:.7rem;}
+.choice-btn{background:rgba(10,10,10,.65);border:1px solid rgba(201,168,76,.2);color:#FAF6EF;padding:.95rem 1.3rem;text-align:left;cursor:pointer;font-family:Georgia,serif;font-size:.97rem;line-height:1.5;transition:all .25s;}
+.choice-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.07);color:var(--gold-light);}
+.choice-btn:disabled{opacity:.45;cursor:default;}
+.c-tag{display:inline-block;font-family:'Josefin Sans',sans-serif;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;border:1px solid;padding:.18rem .5rem;margin-right:.7rem;}
+.choice-btn.diplomatic .c-tag{color:#4CAF50;border-color:rgba(76,175,80,.45);}
+.choice-btn.dramatic .c-tag{color:#FF6B6B;border-color:rgba(255,107,107,.45);}
+.choice-btn.sassy .c-tag{color:var(--gold);border-color:rgba(201,168,76,.45);}
+.choice-btn.classy .c-tag{color:#CE93D8;border-color:rgba(206,147,216,.45);}
+
+.rel-panel{background:linear-gradient(145deg,rgba(26,16,8,.8),rgba(10,10,10,.8));border:1px solid rgba(201,168,76,.18);padding:1.35rem;height:fit-content;position:sticky;top:70px;}
+.rel-title{font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.1rem;padding-bottom:.7rem;border-bottom:1px solid rgba(201,168,76,.18);}
+.rel-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.9rem;}
+.rel-em{font-size:1.35rem;}
+.rel-info{flex:1;}
+.rel-name{font-family:'Josefin Sans',sans-serif;font-size:.6rem;letter-spacing:.1em;color:var(--gold);margin-bottom:.25rem;text-transform:uppercase;}
+.rel-track{height:3px;background:rgba(255,255,255,.1);margin-bottom:.2rem;}
+.rel-fill{height:100%;transition:width .5s,background .5s;}
+.rel-status{font-size:.68rem;color:rgba(250,246,239,.45);}
+
+#result-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.87);display:none;align-items:center;justify-content:center;animation:fadeIn .25s ease;}
+#result-overlay.show{display:flex;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.result-card{background:linear-gradient(145deg,#1a1008,#0f0b05);border:1px solid rgba(201,168,76,.35);padding:2.5rem;max-width:480px;width:92%;text-align:center;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.result-emoji{font-size:3.5rem;margin-bottom:.8rem;}
+.result-text{font-size:1.15rem;line-height:1.7;color:rgba(250,246,239,.9);margin-bottom:1.4rem;}
+.result-chips{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.8rem;}
+.chip{padding:.35rem .8rem;font-family:'Josefin Sans',sans-serif;font-size:.65rem;letter-spacing:.08em;}
+.chip.up{background:rgba(76,175,80,.15);border:1px solid rgba(76,175,80,.4);color:#81C784;}
+.chip.dn{background:rgba(244,67,54,.15);border:1px solid rgba(244,67,54,.4);color:#E57373;}
+
+/* FINALE */
+#screen-finale{flex-direction:column;align-items:center;justify-content:center;padding:3rem 2rem;background:radial-gradient(ellipse at center,rgba(201,168,76,.18) 0%,transparent 70%),linear-gradient(160deg,#0A0A0A 0%,#1A1208 100%);text-align:center;overflow-y:auto;}
+.fin-sparkle{font-size:1.8rem;margin-bottom:.8rem;}
+.fin-title{font-size:2.8rem;font-style:italic;color:var(--gold-light);margin-bottom:.4rem;}
+.fin-sub{font-size:1rem;font-style:italic;color:rgba(250,246,239,.45);margin-bottom:2rem;}
+.fin-avatar{font-size:4.5rem;margin-bottom:.5rem;}
+.fin-name{font-size:1.35rem;font-style:italic;color:var(--gold-light);margin-bottom:1.5rem;}
+.fin-verdict{font-size:1.5rem;font-style:italic;color:var(--rose);margin-bottom:.75rem;}
+.fin-desc{font-style:italic;font-size:.98rem;color:rgba(250,246,239,.65);line-height:1.7;max-width:520px;margin:.75rem auto 1.5rem;}
+.fin-stats{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;}
+.fin-stat{display:flex;flex-direction:column;align-items:center;gap:.25rem;}
+.fin-val{font-size:2rem;color:var(--gold-light);}
+.fin-lbl{font-family:'Josefin Sans',sans-serif;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,246,239,.4);}
+.fin-quote{font-style:italic;font-size:1rem;color:rgba(250,246,239,.5);margin-bottom:2.5rem;line-height:1.6;}
+
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gold);color:#0A0A0A;padding:.65rem 1.4rem;font-family:'Josefin Sans',sans-serif;font-size:.72rem;letter-spacing:.1em;z-index:999;transition:transform .3s ease;pointer-events:none;white-space:nowrap;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- TITLE -->
+<div id="screen-title" class="screen active">
+  <div class="floating-gems">
+    <span class="gem">💎</span><span class="gem">🥂</span>
+    <span class="gem">👠</span><span class="gem">💍</span>
+    <span class="gem">✨</span><span class="gem">🌹</span>
+  </div>
+  <div class="title-wrap">
+    <div class="eyebrow">Bravo presents</div>
+    <h1>
+      <span class="t-real">Real</span>
+      <span class="t-housewives">Housewives</span>
+      <span class="t-of">of</span>
+      <span class="t-bh">Beverly Hills</span>
+    </h1>
+    <div class="divider"></div>
+    <p class="tagline">"Not everyone can live like this, darling."</p>
+    <button class="btn-gold" id="btn-start">Begin Your Reign ✨</button>
+    <button class="btn-outline" id="btn-how">How to Play</button>
+  </div>
+</div>
+
+<!-- HOW TO -->
+<div id="screen-howto" class="screen">
+  <div class="modal">
+    <h2>How to Play 👠</h2>
+    <div class="modal-section">
+      <h3>🎯 Goal</h3>
+      <p>Become the most iconic housewife in Beverly Hills! Navigate 10 dramatic episodes and earn Fame, Drama, Wealth &amp; Clout.</p>
+    </div>
+    <div class="modal-section">
+      <h3>🃏 Each Episode</h3>
+      <p>Face a juicy scenario and pick one of four response styles — each has different consequences for your stats and relationships.</p>
+    </div>
+    <div class="modal-section">
+      <h3>📊 Stats</h3>
+      <ul>
+        <li>⭐ <strong>Fame</strong> — How iconic you are</li>
+        <li>🔥 <strong>Drama</strong> — Your messy factor</li>
+        <li>💰 <strong>Wealth</strong> — Lifestyle power</li>
+        <li>👑 <strong>Clout</strong> — Social influence</li>
+      </ul>
+    </div>
+    <div class="modal-section">
+      <h3>🏆 Ending</h3>
+      <p>Survive 10 episodes. Your final stats determine if you're an Icon, Villain, Fan Favorite — or demoted to Friend Of.</p>
+    </div>
+    <button class="btn-gold" id="btn-howto-close">Got it, darling ✨</button>
+  </div>
+</div>
+
+<!-- CHARACTER SELECT -->
+<div id="screen-character" class="screen">
+  <div class="eyebrow" style="margin-bottom:.5rem">Choose Your Housewife</div>
+  <h2>Who Are You, Darling?</h2>
+  <div class="char-sub">Select your alter ego to begin the season</div>
+  <div class="char-grid" id="char-grid"></div>
+</div>
+
+<!-- GAME -->
+<div id="screen-game" class="screen">
+  <header class="game-header">
+    <div class="hdr-player">
+      <span class="hdr-avatar" id="hdr-avatar"></span>
+      <span class="hdr-name" id="hdr-name"></span>
+    </div>
+    <div class="hdr-ep">
+      <span>Episode</span>
+      <span class="hdr-epnum" id="ep-num">1</span>
+      <span>of 10</span>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item">⭐ Fame
+        <div class="stat-track"><div class="stat-fill s-fame" id="sf-fame"></div></div>
+        <span class="stat-val" id="sv-fame">0</span>
+      </div>
+      <div class="stat-item">🔥 Drama
+        <div class="stat-track"><div class="stat-fill s-drama" id="sf-drama"></div></div>
+        <span class="stat-val" id="sv-drama">0</span>
+      </div>
+      <div class="stat-item">💰 Wealth
+        <div class="stat-track"><div class="stat-fill s-wealth" id="sf-wealth"></div></div>
+        <span class="stat-val" id="sv-wealth">0</span>
+      </div>
+      <div class="stat-item">👑 Clout
+        <div class="stat-track"><div class="stat-fill s-clout" id="sf-clout"></div></div>
+        <span class="stat-val" id="sv-clout">0</span>
+      </div>
+    </div>
+  </header>
+  <div class="game-body">
+    <div class="scene-card" id="scene-card">
+      <div class="scene-loc" id="scene-loc">📍 Beverly Hills</div>
+      <div class="scene-cast" id="scene-cast"></div>
+      <div class="scene-text" id="scene-text"></div>
+      <div class="confessional" id="confessional" style="display:none">
+        <div class="conf-label">🎥 Confessional</div>
+        <div class="conf-text" id="conf-text"></div>
+      </div>
+      <div class="choices" id="choices"></div>
+    </div>
+    <div class="rel-panel">
+      <div class="rel-title">Housewife Relations</div>
+      <div id="rel-list"></div>
+    </div>
+  </div>
+  <div id="result-overlay">
+    <div class="result-card">
+      <div class="result-emoji" id="res-emoji"></div>
+      <div class="result-text" id="res-text"></div>
+      <div class="result-chips" id="res-chips"></div>
+      <button class="btn-gold" id="btn-next">Next Episode →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FINALE -->
+<div id="screen-finale" class="screen">
+  <div class="fin-sparkle">✨ 💎 ✨</div>
+  <div class="fin-title">Season Finale</div>
+  <div class="fin-sub">The reunion is here, darling.</div>
+  <div class="fin-avatar" id="fin-avatar"></div>
+  <div class="fin-name" id="fin-name"></div>
+  <div class="fin-verdict" id="fin-verdict"></div>
+  <div class="fin-desc" id="fin-desc"></div>
+  <div class="fin-stats" id="fin-stats"></div>
+  <div class="fin-quote" id="fin-quote"></div>
+  <button class="btn-gold" id="btn-replay">Play Again 🥂</button>
+</div>
+
+</div>
+<div id="toast"></div>
+
+<script>
+const CHARACTERS=[
+  {id:'lisa',name:'Lisa V.',emoji:'🦢',title:'Queen of Villa Rosa',bio:'"Darling, I don\'t argue with people below my tax bracket."',stats:{fame:80,drama:40,wealth:90,clout:85},catchphrase:"Don't be a hater, darling.",confessionals:["I've been in this game since before most of these women could spell Beverly Hills.","My swans have better manners than half the women at that table.","One must always be fabulous, even in the face of absolute nonsense."]},
+  {id:'erika',name:'Erika J.',emoji:'💃',title:'The Sexy Pop Star',bio:'"Erika Jayne doesn\'t apologize. Ever."',stats:{fame:85,drama:75,wealth:70,clout:70},catchphrase:"That's my truth and I'm sticking to it.",confessionals:["People underestimate me. That's their first mistake.","I showed up as Erika Jayne today. Deal with it.","I've played villains. I recognize one in real life."]},
+  {id:'kyle',name:'Kyle R.',emoji:'👗',title:'The Fashion Icon',bio:'"I\'ve been doing this longer than any of you."',stats:{fame:75,drama:60,wealth:80,clout:75},catchphrase:"I love you, but that's not okay.",confessionals:["I'm always the peacemaker. Sometimes it works.","This is my show. Has been since episode one.","I have receipts. Proceed carefully."]},
+  {id:'sutton',name:'Sutton S.',emoji:'🌹',title:'The Southern Belle',bio:'"I\'m from Georgia, not Beverly Hills. I speak my mind."',stats:{fame:55,drama:70,wealth:85,clout:55},catchphrase:"I would never do that. NEVER.",confessionals:["I have champagne taste and a champagne budget.","Where I come from, we say what we mean.","I'm not difficult. I just have standards."]},
+  {id:'crystal',name:'Crystal K.',emoji:'💎',title:'The Wild Card',bio:'"I keep it real, even when real is uncomfortable."',stats:{fame:60,drama:80,wealth:75,clout:60},catchphrase:"I don't trust the energy in this room.",confessionals:["Everyone here is performing. I'm the only authentic one.","I'm not paranoid. You're all just predictable.","The universe told me to say this."]},
+  {id:'garcelle',name:'Garcelle B.',emoji:'🌺',title:'The Actress',bio:'"I call it like I see it, and I see everything."',stats:{fame:70,drama:65,wealth:65,clout:72},catchphrase:"Oh honey, I notice EVERYTHING.",confessionals:["I've played villains in film. I recognize one here.","My smile doesn't mean I like you.","I've been the outsider. Also the favorite. I prefer the latter."]}
+];
+
+const NPCS=[
+  {id:'dorit',name:'Dorit',emoji:'👒'},
+  {id:'brandi',name:'Brandi',emoji:'🍷'},
+  {id:'rinna',name:'Rinna',emoji:'💋'},
+  {id:'denise',name:'Denise',emoji:'⭐'},
+  {id:'camille',name:'Camille',emoji:'🌟'}
+];
+
+const SCENARIOS=[
+  {loc:"🏠 Kyle's Halloween Party",cast:['Dorit','Rinna'],text:"You've just arrived at Kyle's annual Halloween extravaganza. Dorit is wearing THE SAME costume as you — a vintage Chanel suit with a feathered fascinator. She tells the group she got hers from 'her designer.' The cameras are rolling and everyone is watching.",conf:"Of all the costumes in Beverly Hills... she chose mine. This is not an accident.",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"Great minds think alike, Dorit! Shall we do a quick change? One of us must sacrifice for fashion."',fx:{fame:5,drama:-5,clout:8,wealth:0},rel:{dorit:15,rinna:0},res:{e:'🤝',t:'You handle it with grace. Kyle mouths "thank you" across the room.'}},
+    {type:'dramatic',label:'Dramatic',text:'"I\'m sorry — WHOSE costume is that? Because I have receipts showing I ordered this in JULY."',fx:{fame:15,drama:20,clout:5,wealth:0},rel:{dorit:-25,rinna:10},res:{e:'🔥',t:'The party STOPS. Cameras zoom in. Rinna is already texting her group chat. TV gold.'}},
+    {type:'sassy',label:'Sassy',text:'"Oh Dorit, yours is... fun. Mine is the original. Carry on, sweetheart."',fx:{fame:10,drama:10,clout:12,wealth:0},rel:{dorit:-10,rinna:15},res:{e:'💅',t:'A perfect read with a smile. The housewives audibly gasp. You win this round.'}},
+    {type:'classy',label:'Classy',text:'"You look gorgeous. Now excuse me — I need champagne and better company."',fx:{fame:8,drama:5,clout:15,wealth:0},rel:{dorit:-5,rinna:5},res:{e:'🥂',t:'You glide away without a backward glance. Utterly untouchable.'}}
+  ]},
+  {loc:"🍽️ Dinner at Nobu",cast:['Brandi','Camille'],text:"You're at Nobu for girls' dinner when Brandi announces — wine glass in hand — that she heard a rumor about your marriage. She won't say who told her. She's smiling. Everyone is staring. Camille leans forward, hoping for chaos.",conf:"She said WHAT? On camera? With good lighting? Let's go.",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"Brandi, I don\'t know what you\'ve heard, but my marriage is solid. Let\'s change the subject."',fx:{fame:-5,drama:-10,clout:5,wealth:0},rel:{brandi:5,camille:-10},res:{e:'😤',t:'You shut it down cleanly. The producers look disappointed.'}},
+    {type:'dramatic',label:'Dramatic',text:'"Who told you that?! NAME THEM right now. I\'ll wait." *puts fork down slowly*',fx:{fame:20,drama:25,clout:5,wealth:0},rel:{brandi:-20,camille:20},res:{e:'⚡',t:'The table ERUPTS. Brandi spills her wine. Camille claps. Production gets overtime.'}},
+    {type:'sassy',label:'Sassy',text:'"How interesting — I heard a rumor about YOU too, Brandi. Want to trade?"',fx:{fame:15,drama:15,clout:10,wealth:0},rel:{brandi:-15,camille:10},res:{e:'😏',t:'Brandi goes pale. Camille nearly chokes. You are absolutely UNTOUCHABLE.'}},
+    {type:'classy',label:'Classy',text:'"My personal life isn\'t dinner table conversation. But this tuna tartare is divine."',fx:{fame:5,drama:0,clout:20,wealth:0},rel:{brandi:-5,camille:-5},res:{e:'👑',t:'Maximum elegance. You refuse to give her a single moment.'}}
+  ]},
+  {loc:"✈️ Cast Trip to Lake Tahoe",cast:['Dorit','Denise'],text:"The annual cast trip! You discover room assignments — you've got the smallest room while Dorit claimed the master suite because she 'organized the trip.' Denise whispers it wasn't an accident.",conf:"She gave herself the master suite. I have six Hermès bags in my luggage. Where does she think this is going?",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"Ladies, let\'s do a room lottery — it\'s a group trip after all. Fairness first!"',fx:{fame:5,drama:-5,clout:8,wealth:0},rel:{dorit:-5,denise:15},res:{e:'🎲',t:'Most agree. Dorit reluctantly gives up the suite. You win it in the lottery.'}},
+    {type:'dramatic',label:'Dramatic',text:'"I KNOW what this is. Dorit, this is intentional and I\'m not pretending otherwise."',fx:{fame:15,drama:20,clout:5,wealth:0},rel:{dorit:-25,denise:10},res:{e:'🌋',t:'The trip hasn\'t even started and there\'s already a scene. Producers are THRILLED.'}},
+    {type:'sassy',label:'Sassy',text:'"I love this cozy little room, Dorit. Enjoy the suite — you clearly need the validation."',fx:{fame:12,drama:10,clout:12,wealth:0},rel:{dorit:-15,denise:20},res:{e:'🗡️',t:'That smile destroys Dorit more than a tantrum ever could.'}},
+    {type:'classy',label:'Classy',text:'"No matter — I called ahead and booked the presidential suite at the resort next door."',fx:{fame:18,drama:0,clout:20,wealth:-15},rel:{dorit:-10,denise:25},res:{e:'🏔️',t:'You pull out a keycard. Everyone\'s jaw drops. You sleep like a queen.'}}
+  ]},
+  {loc:"🌸 High-Profile Charity Luncheon",cast:['Camille','Rinna'],text:"The seating chart puts you dead last — Beverly Hills Siberia. You spot Camille and Rinna at the front, giggling. The organizer shrugs and says she was 'given this arrangement.' You know exactly who gave it.",conf:"Siberia. SIBERIA. I'm wearing $12,000 Alexander McQueen and they seated me at SIBERIA.",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"I\'m delighted to mingle with new faces. Though I do wonder about the arrangement..."',fx:{fame:0,drama:-5,clout:5,wealth:0},rel:{camille:0,rinna:0},res:{e:'🌷',t:'You befriend a major donor. Surprisingly useful.'}},
+    {type:'dramatic',label:'Dramatic',text:'"This is UNACCEPTABLE. I am rearranging this seating chart. RIGHT. NOW."',fx:{fame:10,drama:25,clout:-5,wealth:0},rel:{camille:-20,rinna:-20},res:{e:'🚨',t:'You physically move your place card. Security eyes you. TV gold, maybe disaster.'}},
+    {type:'sassy',label:'Sassy',text:'"I actually prefer this table. Fewer fake smiles, better conversation."',fx:{fame:8,drama:5,clout:10,wealth:0},rel:{camille:5,rinna:0},res:{e:'😌',t:'You dine contentedly. Camille is furious you didn\'t react as planned.'}},
+    {type:'classy',label:'Classy',text:'"I see the mix-up — I\'m presenting the award today." *calls contact on stage team*',fx:{fame:15,drama:0,clout:25,wealth:0},rel:{camille:-15,rinna:-10},res:{e:'👸',t:'You end up on stage presenting the award. Camille and Rinna watch in disbelief.'}}
+  ]},
+  {loc:"🏡 Kyle's Living Room — The Confrontation",cast:['All Housewives'],text:"THE GROUP CONFRONTATION. Someone spread a rumor you've been talking behind everyone's backs. Evidence? A screenshot that's clearly been edited. The whole cast is staring. Kyle looks uncomfortable. Time to respond.",conf:"That text has been altered. I can prove it. But first — I want to enjoy this moment.",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"I want to see the original. That text has been doctored and I will prove it."',fx:{fame:10,drama:10,clout:15,wealth:0},rel:{brandi:-30,dorit:10,denise:15,rinna:-10,camille:-10},res:{e:'🕵️',t:'You methodically dismantle the evidence. Three housewives end up apologizing.'}},
+    {type:'dramatic',label:'Dramatic',text:'"I CANNOT BELIEVE THIS. Who doctored this?! SOMEONE IN THIS ROOM IS A LIAR."',fx:{fame:25,drama:30,clout:0,wealth:0},rel:{brandi:-20,dorit:-15,denise:5,rinna:-15,camille:-10},res:{e:'💥',t:'The scene goes viral. Twitter explodes. #HousewivesGate is trending.'}},
+    {type:'sassy',label:'Sassy',text:'"Mm. If you\'re fabricating evidence, at least use a better font."',fx:{fame:20,drama:15,clout:18,wealth:0},rel:{brandi:-15,dorit:0,denise:20,rinna:-5,camille:0},res:{e:'🔍',t:'The room erupts laughing, then realizes you\'re RIGHT. The culprit sweats.'}},
+    {type:'classy',label:'Classy',text:'"I have nothing to defend. Those who know me, know my character. That\'s enough."',fx:{fame:15,drama:0,clout:25,wealth:0},rel:{brandi:-10,dorit:5,denise:10,rinna:5,camille:5},res:{e:'🦋',t:'You stand and leave. Best exit in Housewives history. Fan favorite confirmed.'}}
+  ]},
+  {loc:"🎬 Producer Confessional Room",cast:['Producer'],text:"A producer whispers they'll give you extra airtime if you start drama about another housewife's personal life at tonight's dinner. The story isn't entirely true. But it would make GREAT television.",conf:"The producer dangled airtime in front of me. I'm listening. But at what cost?",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"I won\'t spread rumors. But I\'ll share MY truth — which is interesting enough."',fx:{fame:5,drama:-5,clout:15,wealth:10},rel:{},res:{e:'✨',t:'Your integrity earns you a fan following and a podcast deal.'}},
+    {type:'dramatic',label:'Dramatic',text:'You go for it. Full send. The episode gets 2 million views. The subject is FURIOUS.',fx:{fame:25,drama:30,clout:-10,wealth:15},rel:{brandi:-35},res:{e:'📺',t:'Instant fame. Instant enemy. Instant trending hashtag. Worth it?'}},
+    {type:'sassy',label:'Sassy',text:'"I\'ll give you drama — MY drama. The entertaining kind. Book a solo confessional."',fx:{fame:18,drama:10,clout:12,wealth:10},rel:{},res:{e:'🎤',t:'Your solo confessional becomes the most GIF\'d moment of the season.'}},
+    {type:'classy',label:'Classy',text:'"Absolutely not. And if this airs anyway, I have a lawyer on speed dial."',fx:{fame:0,drama:-10,clout:20,wealth:5},rel:{},res:{e:'⚖️',t:'You keep your dignity. Other castmates stop messing with you.'}}
+  ]},
+  {loc:"🌴 Lisa's Pink Villa — The Snub",cast:['Dorit','Camille'],text:"Lisa threw a garden party and didn't invite you. You find out via Dorit's Instagram live — filmed from INSIDE Lisa's garden, right now. You could crash. You could call. Or you could out-fabulous them entirely.",conf:"She didn't invite me. I repeat: SHE DID NOT INVITE ME. *removes sunglasses slowly*",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"Lisa! I just saw your party — did my invite get lost? I can swing by!"',fx:{fame:-5,drama:-5,clout:-10,wealth:0},rel:{dorit:0,camille:-5},res:{e:'😬',t:'Lisa says yes but clearly didn\'t want you there. Tension all evening.'}},
+    {type:'dramatic',label:'Dramatic',text:'You SHOW UP. Unannounced. In a better outfit than everyone there.',fx:{fame:20,drama:30,clout:5,wealth:-5},rel:{dorit:-20,camille:-15},res:{e:'💃',t:'The most iconic party crash in RHOBH history. Bravo loves you. Lisa does not.'}},
+    {type:'sassy',label:'Sassy',text:'Post at Nobu with a celebrity: "My kind of garden party 🥂"',fx:{fame:15,drama:5,clout:15,wealth:-10},rel:{dorit:-10,camille:0},res:{e:'📱',t:'Your post gets 10x Dorit\'s livestream engagement. Social war: won.'}},
+    {type:'classy',label:'Classy',text:'"I had a perfectly fabulous afternoon. I don\'t need anyone\'s garden party."',fx:{fame:8,drama:0,clout:12,wealth:-5},rel:{dorit:0,camille:0},res:{e:'🌺',t:'Mystery and elegance. Everyone wonders what you were actually doing.'}}
+  ]},
+  {loc:"💆 Spa Day — The Setup",cast:['Denise','Rinna'],text:"During a supposedly relaxing spa day, Rinna pulls out her phone and reads you a DM — supposedly from you, talking badly about Denise. You never sent it. But Denise is right there, and she looks hurt.",conf:"Rinna has a phone and an agenda. This combination is absolutely LETHAL.",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"Denise, I never wrote that. Here — let me show you my phone. Rinna, this is out of line."',fx:{fame:8,drama:10,clout:10,wealth:0},rel:{denise:20,rinna:-25},res:{e:'📱',t:'You prove your innocence. Denise believes you. Rinna squirms beautifully.'}},
+    {type:'dramatic',label:'Dramatic',text:'"RINNA. How DARE you. This is SLANDER and you will hear from my attorney!"',fx:{fame:15,drama:25,clout:5,wealth:0},rel:{denise:-5,rinna:-30},res:{e:'🌊',t:'Rinna cries. Denise is confused. The spa is no longer relaxing. For anyone.'}},
+    {type:'sassy',label:'Sassy',text:'"Interesting. Rinna, can you show me the metadata? Timestamp? Device ID?"',fx:{fame:12,drama:10,clout:15,wealth:0},rel:{denise:15,rinna:-20},res:{e:'🧐',t:'Rinna didn\'t expect FORENSIC ANALYSIS at the spa. She folds completely.'}},
+    {type:'classy',label:'Classy',text:'"Denise, you know my character. Rinna — I\'m going to enjoy my facial." *stands up*',fx:{fame:10,drama:0,clout:18,wealth:0},rel:{denise:5,rinna:-10},res:{e:'🧖',t:'You float away like a golden swan. The cameras follow you.'}}
+  ]},
+  {loc:"🎂 Dorit's Birthday Dinner",cast:['Dorit','Brandi'],text:"It's Dorit's birthday. Brandi leans over, slurring, and whispers she's about to expose something about you. One camera just swung toward your face. You have seconds.",conf:"She's going to do it. I can see it in her wine eyes.",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"Brandi, it\'s Dorit\'s night. Let\'s table this for tomorrow when we\'re all... clearer."',fx:{fame:5,drama:0,clout:10,wealth:0},rel:{dorit:20,brandi:0},res:{e:'🕊️',t:'Crisis averted. Dorit thanks you. Brandi passes out before dessert anyway.'}},
+    {type:'dramatic',label:'Dramatic',text:'"Go ahead, Brandi. SAY IT. On camera. Right now. I dare you."',fx:{fame:20,drama:25,clout:5,wealth:0},rel:{dorit:-10,brandi:-20},res:{e:'🎯',t:'Brandi launches in. You respond perfectly. Dorit cries into her cake. TV GOLD.'}},
+    {type:'sassy',label:'Sassy',text:'"Brandi. Sweetie. You\'re on your fifth glass and I\'m counting."',fx:{fame:12,drama:8,clout:12,wealth:0},rel:{dorit:10,brandi:-15},res:{e:'🍷',t:'The camera catches Brandi counting glasses. She stops. You win by math.'}},
+    {type:'classy',label:'Classy',text:'"Dorit! Tell us how you met PK — we all love that story!" *masterful pivot*',fx:{fame:8,drama:-5,clout:15,wealth:0},rel:{dorit:25,brandi:0},res:{e:'🎂',t:'Dorit beams. Brandi is confused by the pivot. You save the dinner and earn a real ally.'}}
+  ]},
+  {loc:"🌟 The Reunion Stage — Season Finale",cast:['All Housewives'],text:"THE FINALE. You're on the Reunion stage in full glam. The host asks: 'Do you deserve to come back next season — and why you over anyone else here?' Every housewife is watching. The cameras are inches from your face.",conf:"This is it. Every choice this season led to this moment.",choices:[
+    {type:'diplomatic',label:'Diplomatic',text:'"I bring heart, honesty, and I genuinely care about these women — even when it\'s hard."',fx:{fame:10,drama:-5,clout:20,wealth:0},rel:{},res:{e:'💖',t:'Fan favorite energy radiates off you. Contract renewed. You get the most fan mail.'}},
+    {type:'dramatic',label:'Dramatic',text:'"Because I\'m the only one here who tells the TRUTH and has the RATINGS to prove it!"',fx:{fame:25,drama:20,clout:5,wealth:0},rel:{},res:{e:'🏆',t:'The audience ROARS. The host can barely keep order. You\'re already legendary.'}},
+    {type:'sassy',label:'Sassy',text:'"Because, darling — without me, what would any of you actually talk about?"',fx:{fame:20,drama:10,clout:15,wealth:0},rel:{},res:{e:'😌',t:'Dead silence. Then laughter. Then silence as they realize you\'re completely right.'}},
+    {type:'classy',label:'Classy',text:'"I deserve this seat because I\'ve earned it — every episode, every dinner, every moment."',fx:{fame:15,drama:0,clout:25,wealth:0},rel:{},res:{e:'👑',t:'The audience gives you a standing ovation. Even your enemies clap. Untouchable.'}}
+  ]}
+];
+
+let G={player:null,episode:0,stats:{fame:0,drama:0,wealth:0,clout:0},rels:{}};
+
+function clamp(v){return Math.max(0,Math.min(100,v));}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='none';});
+  const el=document.getElementById(id);
+  el.style.display='flex';
+  el.classList.add('active');
+}
+
+function updateStats(){
+  const s=G.stats;
+  ['fame','drama','wealth','clout'].forEach(k=>{
+    document.getElementById('sf-'+k).style.width=s[k]+'%';
+    document.getElementById('sv-'+k).textContent=s[k];
+  });
+}
+
+function relColor(v){if(v>=70)return'#4CAF50';if(v>=40)return'#FFC107';return'#F44336';}
+function relLabel(v){if(v>=70)return'BFF 💕';if(v>=50)return'Civil 🤝';if(v>=30)return'Tense 😒';return'Enemy 💣';}
+
+function renderRels(){
+  const el=document.getElementById('rel-list');
+  el.innerHTML='';
+  NPCS.forEach(npc=>{
+    const v=G.rels[npc.id]||50;
+    el.innerHTML+=`<div class="rel-row"><span class="rel-em">${npc.emoji}</span><div class="rel-info"><div class="rel-name">${npc.name}</div><div class="rel-track"><div class="rel-fill" style="width:${v}%;background:${relColor(v)}"></div></div><div class="rel-status">${relLabel(v)}</div></div></div>`;
+  });
+}
+
+function buildCharGrid(){
+  const grid=document.getElementById('char-grid');
+  grid.innerHTML='';
+  CHARACTERS.forEach(c=>{
+    const card=document.createElement('div');
+    card.className='char-card';
+    const bars=Object.entries(c.stats).map(([k,v])=>`<div class="mini-row"><span class="mini-label">${k}</span><div class="mini-track"><div class="mini-fill" style="width:${v}%"></div></div></div>`).join('');
+    card.innerHTML=`<span class="char-emoji">${c.emoji}</span><div class="char-name">${c.name}</div><div class="char-title">${c.title}</div><div class="char-bio">${c.bio}</div><div class="mini-stats">${bars}</div>`;
+    card.onclick=()=>startGame(c);
+    grid.appendChild(card);
+  });
+}
+
+function startGame(c){
+  G.player=c;G.episode=0;G.stats={...c.stats};G.rels={};
+  NPCS.forEach(n=>G.rels[n.id]=50);
+  document.getElementById('hdr-avatar').textContent=c.emoji;
+  document.getElementById('hdr-name').textContent=c.name;
+  updateStats();renderRels();
+  showScreen('screen-game');
+  nextEpisode();
+}
+
+function nextEpisode(){
+  const ov=document.getElementById('result-overlay');
+  ov.classList.remove('show');ov.style.display='none';
+  if(G.episode>=SCENARIOS.length){showFinale();return;}
+  const sc=SCENARIOS[G.episode++];
+  document.getElementById('ep-num').textContent=G.episode;
+  document.getElementById('scene-loc').textContent=sc.loc;
+
+  const castEl=document.getElementById('scene-cast');
+  castEl.innerHTML=`<div class="cast-pill"><span class="cast-em">${G.player.emoji}</span><span class="cast-nm">${G.player.name}</span></div>`;
+  sc.cast.slice(0,3).forEach(name=>{
+    const npc=NPCS.find(n=>n.name===name)||{emoji:'👩',name};
+    castEl.innerHTML+=`<div class="cast-pill"><span class="cast-em">${npc.emoji||'👩'}</span><span class="cast-nm">${name}</span></div>`;
+  });
+
+  document.getElementById('scene-text').textContent=sc.text;
+
+  const confEl=document.getElementById('confessional');
+  if(sc.conf){
+    confEl.style.display='block';
+    const lines=G.player.confessionals;
+    document.getElementById('conf-text').textContent=G.episode%2===0?lines[G.episode%lines.length]:sc.conf;
+  }else{confEl.style.display='none';}
+
+  const choEl=document.getElementById('choices');
+  choEl.innerHTML='';
+  sc.choices.forEach(ch=>{
+    const btn=document.createElement('button');
+    btn.className='choice-btn '+ch.type;
+    btn.innerHTML=`<span class="c-tag">${ch.label}</span>${ch.text}`;
+    btn.onclick=()=>pick(ch);
+    choEl.appendChild(btn);
+  });
+}
+
+function pick(ch){
+  document.querySelectorAll('.choice-btn').forEach(b=>b.disabled=true);
+  Object.entries(ch.fx).forEach(([k,v])=>{G.stats[k]=clamp(G.stats[k]+v);});
+  updateStats();
+  if(ch.rel){Object.entries(ch.rel).forEach(([id,d])=>{if(G.rels[id]!==undefined)G.rels[id]=clamp(G.rels[id]+d);});renderRels();}
+  const chips=Object.entries(ch.fx).filter(([,v])=>v!==0).map(([k,v])=>`<span class="chip ${v>0?'up':'dn'}">${v>0?'+':''}${v} ${k[0].toUpperCase()+k.slice(1)}</span>`).join('');
+  document.getElementById('res-emoji').textContent=ch.res.e;
+  document.getElementById('res-text').textContent=ch.res.t;
+  document.getElementById('res-chips').innerHTML=chips;
+  const ov=document.getElementById('result-overlay');
+  ov.style.display='flex';
+  requestAnimationFrame(()=>ov.classList.add('show'));
+}
+
+function getVerdict(){
+  const s=G.stats,tot=s.fame+s.drama+s.clout+s.wealth;
+  if(tot>=295)return{v:'🏆 ICON STATUS',d:'You are the definitive Real Housewife of Beverly Hills. Your contract was renewed before the finale even aired. Bravo is developing a spinoff.',q:`"${G.player.catchphrase}"`};
+  if(s.drama>=85)return{v:'🔥 VILLAIN QUEEN',d:'Chaotic, controversial, and completely unmissable. Producers adore you. Fans tweet about you constantly.',q:'"Some of them hate me. All of them watch me."'};
+  if(s.clout>=80&&s.fame>=75)return{v:'👑 POWER PLAYER',d:'Quiet power, devastating precision. You moved through this season like a chess grandmaster. The others don\'t fully understand what happened.',q:'"I don\'t need to be loud to be heard."'};
+  if(s.fame>=80)return{v:'⭐ FAN FAVORITE',d:'The audience is obsessed. Your GIFs are everywhere. Andy Cohen told producers to protect you at all costs. Podcast deal incoming.',q:'"I never asked to be loved. I just was."'};
+  if(tot>=220)return{v:'🥂 SOLID CAST MEMBER',d:'A reliable, enjoyable season. Great moments. Contract renewed — but show us something spicy next time.',q:'"Next season, darling. Next season."'};
+  return{v:'📦 DEMOTED TO FRIEND OF',d:'You played it too safe. Your scenes got cut. You\'re back as a Friend of the Housewives — smaller diamond, bigger opportunity.',q:'"This isn\'t over. I\'m just getting started."'};
+}
+
+function showFinale(){
+  const verd=getVerdict();
+  document.getElementById('fin-avatar').textContent=G.player.emoji;
+  document.getElementById('fin-name').textContent=G.player.name+' — '+G.player.title;
+  document.getElementById('fin-verdict').textContent=verd.v;
+  document.getElementById('fin-desc').textContent=verd.d;
+  document.getElementById('fin-stats').innerHTML=Object.entries(G.stats).map(([k,v])=>`<div class="fin-stat"><div class="fin-val">${v}</div><div class="fin-lbl">${k}</div></div>`).join('');
+  document.getElementById('fin-quote').textContent=verd.q;
+  showScreen('screen-finale');
+}
+
+document.getElementById('btn-start').onclick=()=>{buildCharGrid();showScreen('screen-character');};
+document.getElementById('btn-how').onclick=()=>{document.getElementById('screen-howto').style.display='flex';document.getElementById('screen-howto').classList.add('active');};
+document.getElementById('btn-howto-close').onclick=()=>{document.getElementById('screen-howto').style.display='none';document.getElementById('screen-howto').classList.remove('active');};
+document.getElementById('btn-next').onclick=nextEpisode;
+document.getElementById('btn-replay').onclick=()=>showScreen('screen-title');
+
+// Init hidden screens
+document.querySelectorAll('.screen:not(.active)').forEach(s=>s.style.display='none');
+</script>
+</body>
+</html>
